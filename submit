@@ -1,0 +1,49 @@
+#!/bin/bash
+clear; echo -n "~ HOMEWORK SUBMITTER ~
+Please make sure you are in the directory with the assignemnt.
+If not, please suspend with 'ctrl-c' and start over.
+
+Current directory: $(pwd)
+Enter project title: "; read subject; echo "
+
+Thanks.  I'm going to create your submission in a text file now.
+This will also run your program and record the output.  Ready?
+
+Press enter to create the sumbission." ; read key1; clear
+
+touch submission.txt 
+echo "$(date)
+$(whoami)
+Project: $(echo $subject)
+Directory contents:
+$(ls -l)
+
+Output of 'javac *.java':
+$(javac *.java)
+
+Contents of `echo $subject`.java
+$(cat *.java)
+
+Sample Run:
+
+" >> submission.txt
+
+java $subject | tee -a submission.txt
+
+clear; echo "Great.  Now you can review your submission and
+make any changes that you would like.  
+Once you are satisfied,
+press 'CTRL+X' and 'Y' if you made any changes...
+
+... or just 'CTRL+X' if you didn't."
+nano submission.txt; clear; echo "Alrighty.  Time to send it.
+Press ENTER to confirm everything here and send the email.
+
+To: homework.cs235@my.wheaton.edu
+Subject: $subject
+Contents: <submission.txt> "; read N; sleep 1
+echo "
+Sending..." ; sleep 1
+mail -s $subject arecker41@gmail.com <submission.txt
+echo "Done.  Great work." ; sleep 0.5
+echo "Now go take a break!"
